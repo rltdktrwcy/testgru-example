@@ -1,0 +1,22 @@
+version: "0.1"
+global:
+  setup:
+    - mvn clean install
+pipeline:
+  runTest:
+    # If your project uses formatter, you can configure the pre-stage here.
+    # pre:
+    #    - mvn formatter:format
+    exec:
+      - mvn test -Dtest={{testCodeIdentifier}}
+    # If your project has certain requirements for the final submitted code, you can configure the post-stage here.
+    # post:
+    #   - mvn style:check lint:check formatter:validate
+settings:
+  testPlacementStrategies:
+    - type: regex
+      testFilePattern: "{{sourceFileName}}Tests.java"
+      testDirPattern: /src\/main\/java(.*)/g
+      testDirReplacement: src/test/java$1
+  language: java
+  framework: junit5
